@@ -145,12 +145,13 @@ public class Node {
 		return name;
 	}
 	
-	public Node getChildNamed(String name){
-		for(Node c : children){
+	public ArrayList<Node> getChildrenNamed(String name){
+		ArrayList<Node> children = new ArrayList<Node>();
+		for(Node c : this.children){
 			if(c.name.equalsIgnoreCase(name))
-				return c;
+				children.add(c);
 		}
 		
-		return null;
+		return children;
 	}
 }
