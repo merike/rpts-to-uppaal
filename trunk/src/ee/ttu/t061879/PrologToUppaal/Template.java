@@ -80,8 +80,8 @@ public class Template{
 	}
 	
 	public void initTemplate(Node n){
-		this.name = n.getChildNamed("name");
-		this.init = n.getChildNamed("init");
+		this.name = n.getChildrenNamed("name").get(0);
+		this.init = n.getChildrenNamed("init").get(0);
 	}
 	
 	/**
@@ -93,8 +93,8 @@ public class Template{
 	public HashMap<String, ArrayList<String>> getSourceTargetPairs(){
 		HashMap<String, ArrayList<String>> c = new HashMap<String, ArrayList<String>>();
 		for(Node n : this.transitions){
-			String source = n.getChildNamed("source").getAttrValue("ref");
-			String target = n.getChildNamed("target").getAttrValue("ref");
+			String source = n.getChildrenNamed("source").get(0).getAttrValue("ref");
+			String target = n.getChildrenNamed("target").get(0).getAttrValue("ref");
 			
 			if(!c.containsKey(source)) c.put(source, new ArrayList<String>());
 			c.get(source).add(target);
@@ -113,8 +113,8 @@ public class Template{
 	public HashMap<String, ArrayList<String>> getUniqueSourceTargetPairs(){
 		HashMap<String, ArrayList<String>> c = new HashMap<String, ArrayList<String>>();
 		for(Node n : this.transitions){
-			String source = n.getChildNamed("source").getAttrValue("ref");
-			String target = n.getChildNamed("target").getAttrValue("ref");
+			String source = n.getChildrenNamed("source").get(0).getAttrValue("ref");
+			String target = n.getChildrenNamed("target").get(0).getAttrValue("ref");
 			
 			if(!c.containsKey(source)) c.put(source, new ArrayList<String>());
 			c.get(source).add(target);
@@ -139,8 +139,24 @@ public class Template{
 		}
 	}
 	
-	public void updateDotPositions(HashMap<String, 
-	Point> positions, HashMap<String, ArrayList<Point>> edges){
+	/**
+	 * 
+	 * @param positions two-element array: 
+	 * 1) HashMap<String, Point> - location positions
+	 * 2) HashMap<String, Point> - label positions
+	 * @param edges
+	 */
+	public void updateDotPositions(Object[] object, HashMap<String, ArrayList<Point>> edges){
+		HashMap<String, Point> positions = (HashMap<String, Point>)(object[0]);
+		HashMap<String, Point> labels = (HashMap<String, Point>)(object[1]);
+		
+		Set<String> edgeKeys = edges.keySet();
+		for(String edgeKey : edgeKeys){
+			// first position is somewhat off by dot and breaks whole visualisation
+			// ignore it
+			edges.get(edgeKey).remove(0);
+		}
+		
 		// location positions
 		Set<String> keys = positions.keySet();
 		
@@ -159,9 +175,9 @@ public class Template{
 		
 		// nails
 		for(Node tr : transitions){
-			Node src = tr.getChildNamed("source");
+			Node src = tr.getChildrenNamed("source").get(0);
 			String srcName = src.getAttrValue("ref");
-			Node dst = tr.getChildNamed("target");
+			Node dst = tr.getChildrenNamed("target").get(0);
 			String dstName = dst.getAttrValue("ref");
 			
 			Set<String> keys2 = edges.keySet();
@@ -176,6 +192,17 @@ public class Template{
 						nail.setAvp(new AttrValuePair("x", point.x + ""));
 						nail.setAvp(new AttrValuePair("y", point.y + ""));
 						tr.addChildNode(nail);
+					}
+					ArrayList<Node> labelNodes = tr.getChildrenNamed("label");
+					Point lp = labels.get(edgeKey);
+					int y = -30;
+					for(Node n : labelNodes){
+						// seems that dot gives middle coordinate and Uppaal
+						// takes left coordinate, compensate
+						n.setAvp(new AttrValuePair("x", lp.x - 30 + ""));
+						n.setAvp(new AttrValuePair("y", lp.y + y + ""));
+						// move next one down to avoid overlapping
+						y += 15;
 					}
 				}
 			}

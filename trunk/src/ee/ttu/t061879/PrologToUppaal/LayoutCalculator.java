@@ -34,8 +34,6 @@ public class LayoutCalculator {
 	public void calculatePositions(Template t){
 		if(this.layout.equalsIgnoreCase("force")) calculateForcePositions(t);
 		else if(this.layout.equalsIgnoreCase("dot")) calculateDotPositions(t);
-//		else calculateDotPositions(t);
-		else calculateForcePositions(t);
 	}
 	
 	private void calculateDotPositions(Template t){
@@ -48,7 +46,11 @@ public class LayoutCalculator {
 			for(String src : srcKeys){
 				ArrayList<String> targets = pairs.get(src);
 				for(String target : targets){
-					dotInput += src + " -> " + target + ";\n";
+					dotInput += src + " -> " + target + " ";
+					// force dot to leave space for labels, exact label isn't used
+					// but takes roughly the same amount of space
+					// TODO possibly use real labels
+					dotInput += "[label=\"tingimustele\\nomistustele\"];\n";
 				}
 			}
 			dotInput += "}\n";
@@ -56,12 +58,8 @@ public class LayoutCalculator {
 			
 			File dotOut = new File(dotSource.getAbsolutePath().replace(".dot", "_out.dot"));
 			
-//			System.err.println(System.getProperty("os.name"));
-//			System.err.println(f.getAbsolutePath());
 			Process p = Runtime.getRuntime().exec("dot -o" + 
 					dotOut.getAbsolutePath() + " " + dotSource.getAbsolutePath());
-//			Process p = Runtime.getRuntime().exec("dot " + 
-//					f.getAbsolutePath());
 					
 			String line;
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -70,30 +68,35 @@ public class LayoutCalculator {
 			}
 			input.close();
 
-			System.err.println(p.waitFor());
+//			System.err.println(p.waitFor());
 			
 			HashMap<String, Point> positions = new HashMap<String, Point>();
+			HashMap<String, Point> labelPositions = new HashMap<String, Point>();
 			HashMap<String, ArrayList<Point>> edges = new HashMap<String, ArrayList<Point>>();
 			
 			String out = MyFileReaderWriter.readFileToString(dotOut.getAbsolutePath());
 			int start = 0;
 			while(out.length() > 0){
-				out = out.trim();
+				// remove line breaks from multi-line statements escaped by \
+				out = out.trim().replace("\\\n", "");
 				if(out.startsWith("digraph", start)){
-					System.err.println("digraph");
+//					System.err.println("digraph");
 					out = out.substring(out.indexOf("\n", start) + 1);
 				}
 				else if(out.startsWith("node", start)){
-					System.err.println("node");
+//					System.err.println("node");
 					out = out.substring(out.indexOf("\n", start) + 1);
 				}
 				else if(out.startsWith("graph", start)){
-					System.err.println("graph");
+//					System.err.println("graph");
 					out = out.substring(out.indexOf("\n", start) + 1);
 				}
+				// edge
 				else if(out.indexOf(";\n", start) != -1
 						&& out.substring(start, out.indexOf(";\n", start)).contains("->")){
-					System.err.println("edge");
+//					System.err.println("edge");
+					
+					// parse locations for nails
 					String edge = out.substring(0, out.indexOf(";\n"));
 					int pos1 = edge.indexOf("->");
 					String src = edge.substring(0, pos1).trim();
@@ -102,24 +105,37 @@ public class LayoutCalculator {
 					int pos3 = edge.indexOf("pos=\"") + 7;
 					int pos4 = edge.indexOf("\"", pos3 + 5);
 					String edgePoints[] = edge.substring(pos3, pos4)
-						.replace("\\\n", "").split(" ");
+						.split(" ");
 					ArrayList<Point> ps = new ArrayList<Point>();
 					for(String point : edgePoints){
 						ps.add(new Point(
+								// dot's y-coordinate is reversed compared to Uppaal
 								Integer.parseInt(point.substring(0, point.indexOf(","))),
-								Integer.parseInt(point.substring(point.indexOf(",") + 1))
+								-Integer.parseInt(point.substring(point.indexOf(",") + 1))
 						));
 					}
 					edges.put(src + "," + dst, ps);
 					
+					// parse locations for labels
+					int pos5 = edge.indexOf("lp=\"") + 4;
+					int pos6 = edge.indexOf("\"", pos5 + 1);
+					System.err.println("label position " + edge.substring(pos5, pos6));
+					String label = edge.substring(pos5, pos6);
+					labelPositions.put(src + "," + dst, (new Point(
+							// dot's y-coordinate is reversed compared to Uppaal
+							Integer.parseInt(label.substring(0, label.indexOf(","))),
+							-Integer.parseInt(label.substring(label.indexOf(",") + 1))
+					)));
+					
+					
 					out = out.substring(out.indexOf(";\n", start) + 2);
 				}
 				else if(out.startsWith("}")){
-					System.err.println("end");
+//					System.err.println("end");
 					out = out.substring(1);
 				}
 				else{
-					System.err.println("node");
+//					System.err.println("node");
 					String node = out.substring(0, out.indexOf("\n"));
 					int pos1 = node.indexOf(" [");
 					String name = node.substring(0, pos1);
@@ -127,23 +143,24 @@ public class LayoutCalculator {
 					int pos3 = node.indexOf("\"", pos2 + 5);
 					String x = node.substring(pos2, node.indexOf(",")),
 						y = node.substring(node.indexOf(",") + 1, pos3);
-					Point point = new Point(Integer.parseInt(x), Integer.parseInt(y));
+					// dot's y-coordinate is reversed compared to Uppaal
+					Point point = new Point(Integer.parseInt(x), -Integer.parseInt(y));
 					positions.put(name, point);
 					
 					out = out.substring(out.indexOf("\n", start) + 1);
 				}
 			}
-			t.updateDotPositions(positions, edges);
+			t.updateDotPositions(new Object[]{positions, labelPositions}, edges);
 		}
 		catch(IOException e){System.err.println(e.getMessage());}
-		catch(InterruptedException e){};
+//		catch(InterruptedException e){};
 	}
 	
 	private void calculateForcePositions(Template t){
 		HashMap<String, ArrayList<String>> c = t.getSourceTargetPairs();
 		
 		Set<String> keys = c.keySet();
-		System.err.println(keys.size());
+//		System.err.println(keys.size());
 		
 		HashMap<String, Point> positions = new HashMap<String, Point>();
 		
