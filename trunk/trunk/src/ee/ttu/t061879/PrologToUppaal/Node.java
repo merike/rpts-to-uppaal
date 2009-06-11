@@ -11,28 +11,37 @@ public class Node {
 	/**
 	 * @uml.property  name="name"
 	 */
-	String name;
-	ArrayList<Node> children;
-	
+	private String name;
+	/** 
+	 * @uml.property name="children"
+	 */
+	private ArrayList<Node> children;
 	/**
 	 * template where node belongs or which it represents
 	 * @uml.property  name="tmpl"
 	 */
-	String tmpl = "";
+	private String tmpl = "";
 	/**
 	 * @uml.property  name="avp"
 	 * @uml.associationEnd  
 	 */
-	ArrayList<AttrValuePair> avp;
+	private ArrayList<AttrValuePair> avp;
 	/**
 	 * @uml.property  name="text"
 	 */
-	String text = "";
+	private String text = "";
 	
 	Node(String name){
 		this.name = name;
 		this.children = new ArrayList<Node>();
 		this.avp = new ArrayList<AttrValuePair>();
+	}
+	
+	/** 
+	 * @uml.property  name="children"
+	 */
+	public ArrayList<Node> getChildren() {
+		return children;
 	}
 	
 	void addChildNode(Node child){
@@ -88,7 +97,7 @@ public class Node {
 				return;
 			}
 		}
-		
+	
 		this.avp.add(avp);
 	}
 	
@@ -153,5 +162,14 @@ public class Node {
 		}
 		
 		return children;
+	}
+
+	/**
+	 * Setter of the property <tt>children</tt>
+	 * @param children  The children to set.
+	 * @uml.property  name="children"
+	 */
+	public void setChildren(ArrayList children) {
+		this.children = children;
 	}
 }

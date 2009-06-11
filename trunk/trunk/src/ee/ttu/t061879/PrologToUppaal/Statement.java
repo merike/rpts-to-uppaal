@@ -8,7 +8,7 @@ package ee.ttu.t061879.PrologToUppaal;
  * @uml.dependency  supplier="ee.ttu.t061879.PrologToUppaal.FunctionHandler"
  */
 public class Statement {
-	static void location(Templates pool, String s){
+	public static void location(Templates pool, String s){
 //		System.err.println("location: " + s);
 		try{
 			String arguments[] = s.split(",");
@@ -38,7 +38,7 @@ public class Statement {
 		}
 	}
 	
-	static void template(Templates pool, String s){
+	public static void template(Templates pool, String s){
 //		System.err.println("template: " + s);
 		try{
 			String arguments[] = s.split(",");
@@ -65,7 +65,7 @@ public class Statement {
 		}
 	}
 	
-	static void transition(Templates pool, String s){
+	public static void transition(Templates pool, String s){
 		s = s.replace(" ", "");
 //		System.err.println("transition: " + s);
 		
@@ -177,7 +177,7 @@ public class Statement {
 		}
 	}
 	
-	static String guard(String io, String internal){
+	private static String guard(String io, String internal){
 		String r = "";
 		
 		// io
@@ -214,7 +214,7 @@ public class Statement {
 		return r + " ";
 	}
 	
-	static String assign(String ioAssign, String outAssign){
+	private static String assign(String ioAssign, String outAssign){
 		String r = "";
 		
 		// io
@@ -253,7 +253,7 @@ public class Statement {
 		return r;
 	}
 
-	static void declaration(Templates pool, String s){
+	public static void declaration(Templates pool, String s){
 		s = s.replace(" ", "");
 //		System.err.println(s);
 		
@@ -310,7 +310,7 @@ public class Statement {
 		}
 	}
 	
-	static void system(Templates pool, String s){
+	public static void system(Templates pool, String s){
 		s = s.replace(" ", "");
 		
 		try{
@@ -327,7 +327,7 @@ public class Statement {
 //		System.err.println(system);
 	}
 	
-	static void instantiation(Templates pool, String s){
+	public static void instantiation(Templates pool, String s){
 		try{
 			int pos = s.indexOf(",");
 			int pos2 = s.indexOf(",", pos + 1);

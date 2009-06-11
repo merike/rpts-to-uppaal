@@ -34,14 +34,15 @@ public class PrologToUppaal extends Requirements {
 			
 			try{
 				max = Integer.parseInt(args[0]);
+				System.out.println("coefficent: " + max);
 			}
 			catch(NullPointerException e){}
 			catch(NumberFormatException e){}
 			
 			// layout
 			if(args.length > 1){
-				if(args[1].equalsIgnoreCase("dot")) layout = "dot";
-				else if(args[1].equalsIgnoreCase("force")) layout = "force";
+				if(args[args.length - 2].equalsIgnoreCase("dot")) layout = "dot";
+				else if(args[args.length - 2].equalsIgnoreCase("force")) layout = "force";
 				else layout = "none";
 			}
 		}

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 /**
  * @author     Merike Sell
- * @uml.dependency  supplier="ee.ttu.t061879.PrologToUppaal.Template"
+ * @uml.dependency   supplier="ee.ttu.t061879.PrologToUppaal.Template"
+ * @uml.dependency   supplier="ee.ttu.t061879.PrologToUppaal.FunctionHandler"
  */
 public class Templates extends ArrayList<Template>{
 	private static final long serialVersionUID = 1L;
@@ -17,10 +18,10 @@ public class Templates extends ArrayList<Template>{
 	 * @uml.property  name="declaration"
 	 * @uml.associationEnd  
 	 */
-	Node declaration;
-	ArrayList<Variable> globalVariables;
-	String system = "";
-	String processes = "\n";
+	private Node declaration;
+	private ArrayList<Variable> globalVariables;
+	private String system = "";
+	private String processes = "\n";
 	private LayoutCalculator l;
 
 	public Templates(FunctionHandler f, LayoutCalculator l) {
@@ -29,30 +30,30 @@ public class Templates extends ArrayList<Template>{
 		globalVariables = new ArrayList<Variable>();
 	}
 	
-	void add(Node n){
-		if(n.name.equalsIgnoreCase("template")){
+	public void add(Node n){
+		if(n.getName().equalsIgnoreCase("template")){
 			Template t = new Template();
 			t.initTemplate(n);
 			this.add(t);
 		}
-		else if(n.name.equalsIgnoreCase("location")){
-			this.getTemplateByName(n.tmpl).locations.add(n);
+		else if(n.getName().equalsIgnoreCase("location")){
+			this.getTemplateByName(n.getTmpl()).getLocations().add(n);
 		}
-		else if(n.name.equalsIgnoreCase("transition")){
-			this.getTemplateByName(n.tmpl).transitions.add(n);
+		else if(n.getName().equalsIgnoreCase("transition")){
+			this.getTemplateByName(n.getTmpl()).getLocations().add(n);
 		}
-		else if(n.name.equalsIgnoreCase("declaration")){
-			if(n.tmpl.length() != 0)
-				this.getTemplateByName(n.tmpl).setDeclaration(n);
+		else if(n.getName().equalsIgnoreCase("declaration")){
+			if(n.getTmpl().length() != 0)
+				this.getTemplateByName(n.getTmpl()).setDeclaration(n);
 			else this.declaration = n;
 		}
 	}
 	
-	void add(Variable v){
+	public void add(Variable v){
 		globalVariables.add(v);
 	}
 	
-	void addToSystem(String s){
+	public void addToSystem(String s){
 		if(s.substring(0, 6).equalsIgnoreCase("system")) system = s;
 		else processes += s;
 	}
@@ -76,15 +77,15 @@ public class Templates extends ArrayList<Template>{
 		String[] functionNames = f.getFunctionNames();
 		for(int i = 0; i < this.size(); i++){
 			Template t = this.get(i);
-			for(int j = 0; j < t.transitions.size(); j++){
+			for(int j = 0; j < t.getTransitions().size(); j++){
 				// guard node
-				String guard = t.transitions.get(j).children.get(3).getText();
+				String guard = t.getTransitions().get(j).getChildren().get(3).getText();
 //				System.err.println("before: " + guard);
 				for(String n : functionNames){
 					guard = guard.replace(n + " ", n + "() ");
 				}
 //				System.err.println("\nafter: " + guard);
-				t.transitions.get(j).children.get(3).setText(guard);
+				t.getTransitions().get(j).getChildren().get(3).setText(guard);
 			}
 		}
 		
@@ -105,7 +106,7 @@ public class Templates extends ArrayList<Template>{
 	private Template getTemplateByName(String s){
 		for(Template t : this){
 			Node name = t.getName();
-			if(name.text.equalsIgnoreCase(s))
+			if(name.getText().equalsIgnoreCase(s))
 				return t;
 		}
 		

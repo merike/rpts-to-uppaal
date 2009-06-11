@@ -8,12 +8,12 @@ public class AttrValuePair {
 	/**
 	 * @uml.property  name="attr"
 	 */
-	String attr;
+	private String attr;
 	
 	/**
 	 * @uml.property  name="value"
 	 */
-	String value;
+	private String value;
 	
 	/**
 	 * @return

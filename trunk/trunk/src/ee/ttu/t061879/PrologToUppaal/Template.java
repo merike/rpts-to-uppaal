@@ -11,27 +11,44 @@ import java.util.Set;
  * @uml.dependency  supplier="ee.ttu.t061879.PrologToUppaal.Templates"
  */
 public class Template{
-	ArrayList<Node> locations;
-	ArrayList<Node> transitions;
+	/** 
+	 * @uml.property name="locations"
+	 */
+	private ArrayList<Node> locations;
+	/** 
+	 * @uml.property name="transitions"
+	 */
+	private ArrayList<Node> transitions;
 	/**
 	 * @uml.property  name="declaration"
 	 * @uml.associationEnd  
 	 */
-	Node declaration;
+	private Node declaration;
 	/**
 	 * @uml.property  name="name"
 	 * @uml.associationEnd  
 	 */
-	Node name;
+	private Node name;
 	/**
 	 * @uml.property  name="init"
 	 * @uml.associationEnd  
 	 */
-	Node init;
+	private Node init;
 	
 	public Template() {
 		locations = new ArrayList<Node>();
 		transitions = new ArrayList<Node>();
+	}
+	
+	public ArrayList<Node> getTransitions() {
+		return transitions;
+	}
+	
+	/** 
+	 * @uml.property  name="locations"
+	 */
+	public ArrayList getLocations() {
+		return locations;
 	}
 
 	/**
@@ -209,4 +226,12 @@ public class Template{
 		}
 	}
 
+	/** 
+	 * Setter of the property <tt>locations</tt>
+	 * @param locations  The locations to set.
+	 * @uml.property  name="locations"
+	 */
+	public void setLocations(ArrayList locations) {
+		this.locations = locations;
+	}
 }

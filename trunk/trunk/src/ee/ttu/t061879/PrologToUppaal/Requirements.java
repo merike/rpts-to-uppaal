@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Requirements {
 	private ArrayList<String> reqs = new ArrayList<String>();
 	
-	void requiredTransitionsTaken(String variableName, int length){
+	public void requiredTransitionsTaken(String variableName, int length){
 		String req = "E <> ";
 		req += variableName + "[0] == true ";
 		for(int i = 1; i < length; i++){
