@@ -13,6 +13,9 @@ public class Variable {
 	 * @uml.property  name="variableType"
 	 */
 	private String variableType = "";
+	/** 
+	 * @uml.property name="allowedValues"
+	 */
 	private String allowedValues = "";
 	private String initValues = "";
 	/**
@@ -121,6 +124,15 @@ public class Variable {
 		r += ";";
 		
 		return r;
+	}
+
+	/**
+	 * Getter of the property <tt>allowedValues</tt>
+	 * @return  Returns the allowedValues.
+	 * @uml.property  name="allowedValues"
+	 */
+	public String getAllowedValues() {
+		return allowedValues;
 	}
 
 }

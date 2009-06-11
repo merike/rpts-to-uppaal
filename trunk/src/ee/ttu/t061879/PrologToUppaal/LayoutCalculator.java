@@ -28,6 +28,7 @@ public class LayoutCalculator {
 	private String layout = "";
 	
 	public LayoutCalculator(String layout) {
+		System.out.println("layout: " + layout);
 		this.layout = layout;
 	}
 	
@@ -119,7 +120,7 @@ public class LayoutCalculator {
 					// parse locations for labels
 					int pos5 = edge.indexOf("lp=\"") + 4;
 					int pos6 = edge.indexOf("\"", pos5 + 1);
-					System.err.println("label position " + edge.substring(pos5, pos6));
+//					System.err.println("label position " + edge.substring(pos5, pos6));
 					String label = edge.substring(pos5, pos6);
 					labelPositions.put(src + "," + dst, (new Point(
 							// dot's y-coordinate is reversed compared to Uppaal
@@ -188,7 +189,7 @@ public class LayoutCalculator {
 		try{Thread.sleep(1000);}catch(InterruptedException e){}
 		
 		double totalKineticEnergy;
-		for(int i = 0; i < 500; i++){
+		for(int i = 0; i < 100; i++){
 			int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE,
 				maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
 			
@@ -280,7 +281,7 @@ public class LayoutCalculator {
 			
 			System.err.println("total energy " + totalKineticEnergy);
 			
-			try{Thread.sleep(1);}catch(InterruptedException e){}
+			try{Thread.sleep(5);}catch(InterruptedException e){}
 			g.refresh(xAdjust, yAdjust, xScaleAdjust, yScaleAdjust);
 			
 		}
@@ -377,10 +378,7 @@ public class LayoutCalculator {
 		}
 	}
 	
-	/**
-	 * @author  Merike Sell
-	 */
-	class GraphFrame extends JFrame{
+	private class GraphFrame extends JFrame{
 		/**
 		 * @uml.property  name="d"
 		 * @uml.associationEnd  
@@ -404,14 +402,14 @@ public class LayoutCalculator {
 			d.refresh(xAdj, yAdj, xScAdj, yScAdj);
 		}
 		
-		class DrawPane extends JPanel{
+		private class DrawPane extends JPanel{
 			HashMap<String, Point> p;
 			HashMap<String, ArrayList<String>> e;
 			
-			int xAdj = 0;
-			int yAdj = 0;
-			double xScAdj = 1.0;
-			double yScAdj = 1.0;
+			private int xAdj = 0;
+			private int yAdj = 0;
+			private double xScAdj = 1.0;
+			private double yScAdj = 1.0;
 			
 			public DrawPane(HashMap<String, Point> points,
 							HashMap<String, ArrayList<String>> c) {
@@ -419,7 +417,7 @@ public class LayoutCalculator {
 				this.e = c;
 			}
 			
-			protected void refresh(int xAdj, int yAdj, double xScAdj, double yScAdj) {
+			private void refresh(int xAdj, int yAdj, double xScAdj, double yScAdj) {
 				this.xAdj = xAdj;
 				this.yAdj = yAdj;
 				this.xScAdj = xScAdj;
