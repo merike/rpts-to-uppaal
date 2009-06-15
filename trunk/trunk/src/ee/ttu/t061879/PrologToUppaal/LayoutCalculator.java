@@ -17,8 +17,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class LayoutCalculator {
-	private boolean X = true;
-	private boolean Y = false;
+	private final boolean X = true;
+	private final boolean Y = false;
 	private double mass = 1.0;
 	private double equilibriumDistance = 200.0;
 	private	double springConstant = 0.1;
@@ -42,7 +42,7 @@ public class LayoutCalculator {
 			File dotSource = new File(t.getName().getText() + ".dot");
 			
 			String dotInput = "digraph " + t.getName().getText() + "{\n";
-			HashMap<String, ArrayList<String>> pairs = t.getUniqueSourceTargetPairs();
+			HashMap<String, ArrayList<String>> pairs = t.getUniqSrcTrgtPairs();
 			Set<String> srcKeys = pairs.keySet();
 			for(String src : srcKeys){
 				ArrayList<String> targets = pairs.get(src);
@@ -55,7 +55,7 @@ public class LayoutCalculator {
 				}
 			}
 			dotInput += "}\n";
-			MyFileReaderWriter.writeStringToFile(dotInput, dotSource.getAbsolutePath());
+			MyFileReaderWriter.writeStrToFile(dotInput, dotSource.getAbsolutePath());
 			
 			File dotOut = new File(dotSource.getAbsolutePath().replace(".dot", "_out.dot"));
 			
@@ -75,7 +75,7 @@ public class LayoutCalculator {
 			HashMap<String, Point> labelPositions = new HashMap<String, Point>();
 			HashMap<String, ArrayList<Point>> edges = new HashMap<String, ArrayList<Point>>();
 			
-			String out = MyFileReaderWriter.readFileToString(dotOut.getAbsolutePath());
+			String out = MyFileReaderWriter.readFileToStr(dotOut.getAbsolutePath());
 			int start = 0;
 			while(out.length() > 0){
 				// remove line breaks from multi-line statements escaped by \
@@ -151,14 +151,14 @@ public class LayoutCalculator {
 					out = out.substring(out.indexOf("\n", start) + 1);
 				}
 			}
-			t.updateDotPositions(new Object[]{positions, labelPositions}, edges);
+			t.updDotPositions(new Object[]{positions, labelPositions}, edges);
 		}
 		catch(IOException e){System.err.println(e.getMessage());}
 //		catch(InterruptedException e){};
 	}
 	
 	private void calculateForcePositions(Template t){
-		HashMap<String, ArrayList<String>> c = t.getSourceTargetPairs();
+		HashMap<String, ArrayList<String>> c = t.getSrcTrgtPairs();
 		
 		Set<String> keys = c.keySet();
 //		System.err.println(keys.size());
@@ -287,7 +287,7 @@ public class LayoutCalculator {
 		}
 		try{Thread.sleep(1000);}catch(InterruptedException e){}
 		g.dispose();
-		t.updateForcePositions(positions);
+		t.updForcePositions(positions);
 		
 		return;
 	}
@@ -362,7 +362,7 @@ public class LayoutCalculator {
 	}
 	
 
-	public int getQuarter(Point p1, Point p2){
+	private int getQuarter(Point p1, Point p2){
 		boolean x, y;
 		
 		x = ((p2.x - p1.x) > 0);
@@ -379,6 +379,7 @@ public class LayoutCalculator {
 	}
 	
 	private class GraphFrame extends JFrame{
+		private static final long serialVersionUID = -3517207430249025792L;
 		/**
 		 * @uml.property  name="d"
 		 * @uml.associationEnd  
@@ -403,6 +404,7 @@ public class LayoutCalculator {
 		}
 		
 		private class DrawPane extends JPanel{
+			private static final long serialVersionUID = 4311742621333854011L;
 			HashMap<String, Point> p;
 			HashMap<String, ArrayList<String>> e;
 			

@@ -7,7 +7,10 @@ public class Variable {
 	/**
 	 * @uml.property  name="name"
 	 */
-	private String name = "";
+	public String name = "";
+	/**
+	 * @uml.property  name="dataType"
+	 */
 	private String dataType = "";
 	/**
 	 * @uml.property  name="variableType"
@@ -17,6 +20,9 @@ public class Variable {
 	 * @uml.property name="allowedValues"
 	 */
 	private String allowedValues = "";
+	/**
+	 * @uml.property  name="initValues"
+	 */
 	private String initValues = "";
 	/**
 	 * @uml.property  name="length"

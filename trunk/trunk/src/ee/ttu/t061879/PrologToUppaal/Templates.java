@@ -13,7 +13,7 @@ public class Templates extends ArrayList<Template>{
 	 * @uml.property  name="f"
 	 * @uml.associationEnd  
 	 */
-	FunctionHandler f;
+	private FunctionHandler f;
 	/**
 	 * @uml.property  name="declaration"
 	 * @uml.associationEnd  

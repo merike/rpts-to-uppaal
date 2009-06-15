@@ -31,7 +31,7 @@ public class Node {
 	 */
 	private String text = "";
 	
-	Node(String name){
+	public Node(String name){
 		this.name = name;
 		this.children = new ArrayList<Node>();
 		this.avp = new ArrayList<AttrValuePair>();
@@ -44,7 +44,7 @@ public class Node {
 		return children;
 	}
 	
-	void addChildNode(Node child){
+	public void addChildNode(Node child){
 		if(child == null){
 			System.err.println("Trying to add null!");
 		} else children.add(child);
@@ -169,7 +169,7 @@ public class Node {
 	 * @param children  The children to set.
 	 * @uml.property  name="children"
 	 */
-	public void setChildren(ArrayList children) {
+	public void setChildren(ArrayList<Node> children) {
 		this.children = children;
 	}
 }

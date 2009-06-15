@@ -19,7 +19,7 @@ public class MyFileReaderWriter {
 	 * @param filepath file to read
 	 * @return file contents as a string
 	 */
-	static String readFileToString(String filepath){
+	public static String readFileToStr(String filepath){
 		String fileString = "";
 		try{
 			FileReader fr = new FileReader(new File(filepath));
@@ -48,7 +48,7 @@ public class MyFileReaderWriter {
 	 * @param filepath filepath to write
 	 * @return success
 	 */
-	static boolean writeStringToFile(String content, String filepath){
+	public static boolean writeStrToFile(String content, String filepath){
 		try{
 			FileWriter fw = new FileWriter(new File(filepath));
 			BufferedWriter bw = new BufferedWriter(fw);
