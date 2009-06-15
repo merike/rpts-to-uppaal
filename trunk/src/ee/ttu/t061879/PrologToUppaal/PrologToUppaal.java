@@ -26,7 +26,7 @@ public class PrologToUppaal extends Requirements {
 			// last argument is filepath
 			filepath = args[args.length - 1];
 			
-			file = MyFileReaderWriter.readFileToString(filepath);
+			file = MyFileReaderWriter.readFileToStr(filepath);
 			if(file.length() == 0) System.exit(2);
 			
 			File f = new File(filepath);
@@ -123,7 +123,7 @@ public class PrologToUppaal extends Requirements {
 		outfile += "<nta>\n";
 		outfile += pool.toString();
 		outfile += "\n</nta>";
-		boolean result = MyFileReaderWriter.writeStringToFile(outfile, out);
+		boolean result = MyFileReaderWriter.writeStrToFile(outfile, out);
 		if(!result) System.exit(3);
 		System.err.println(out);
 		
@@ -134,7 +134,7 @@ public class PrologToUppaal extends Requirements {
 			r.requiredTransitionsTaken(a.getAttr(), Integer.parseInt(a.getValue()));
 			File f = new File(filepath);
 			out = f.getPath() + ".q";
-			boolean result2 = MyFileReaderWriter.writeStringToFile(r.toString(), out);
+			boolean result2 = MyFileReaderWriter.writeStrToFile(r.toString(), out);
 			if(!result2) System.exit(3);
 			System.err.println(out);
 		}

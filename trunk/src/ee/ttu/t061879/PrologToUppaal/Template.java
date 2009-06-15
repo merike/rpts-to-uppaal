@@ -47,7 +47,7 @@ public class Template{
 	/** 
 	 * @uml.property  name="locations"
 	 */
-	public ArrayList getLocations() {
+	public ArrayList<Node> getLocations() {
 		return locations;
 	}
 
@@ -107,7 +107,7 @@ public class Template{
 	 * and inner name of vertices having a connection to key vertice
 	 * (undirected graph) are kept in ArrayList
 	 */
-	public HashMap<String, ArrayList<String>> getSourceTargetPairs(){
+	public HashMap<String, ArrayList<String>> getSrcTrgtPairs(){
 		HashMap<String, ArrayList<String>> c = new HashMap<String, ArrayList<String>>();
 		for(Node n : this.transitions){
 			String source = n.getChildrenNamed("source").get(0).getAttrValue("ref");
@@ -127,7 +127,7 @@ public class Template{
 	 * and inner name of vertices having a connection from key vertice
 	 * (directed graph) are kept in ArrayList
 	 */
-	public HashMap<String, ArrayList<String>> getUniqueSourceTargetPairs(){
+	public HashMap<String, ArrayList<String>> getUniqSrcTrgtPairs(){
 		HashMap<String, ArrayList<String>> c = new HashMap<String, ArrayList<String>>();
 		for(Node n : this.transitions){
 			String source = n.getChildrenNamed("source").get(0).getAttrValue("ref");
@@ -139,7 +139,7 @@ public class Template{
 		return c;
 	}
 	
-	public void updateForcePositions(HashMap<String, Point> positions){
+	public void updForcePositions(HashMap<String, Point> positions){
 		Set<String> keys = positions.keySet();
 		
 		// try to update each location
@@ -163,7 +163,7 @@ public class Template{
 	 * 2) HashMap<String, Point> - label positions
 	 * @param edges
 	 */
-	public void updateDotPositions(Object[] object, HashMap<String, ArrayList<Point>> edges){
+	public void updDotPositions(Object[] object, HashMap<String, ArrayList<Point>> edges){
 		HashMap<String, Point> positions = (HashMap<String, Point>)(object[0]);
 		HashMap<String, Point> labels = (HashMap<String, Point>)(object[1]);
 		
