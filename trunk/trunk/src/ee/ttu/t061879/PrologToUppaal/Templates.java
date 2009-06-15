@@ -40,7 +40,7 @@ public class Templates extends ArrayList<Template>{
 			this.getTemplateByName(n.getTmpl()).getLocations().add(n);
 		}
 		else if(n.getName().equalsIgnoreCase("transition")){
-			this.getTemplateByName(n.getTmpl()).getLocations().add(n);
+			this.getTemplateByName(n.getTmpl()).getTransitions().add(n);
 		}
 		else if(n.getName().equalsIgnoreCase("declaration")){
 			if(n.getTmpl().length() != 0)
